@@ -15,10 +15,11 @@ function downloadCsvFilesToFTP(ftp, path) {
                 if (file.name.includes(".csv")) {
                     ftp.get(file.name, (err, stream) => {
                         if (err) throw err;
+                        stream.pipe(fs.createWriteStream(LOCAL_CSV_PATH + "/" + file.name));
                         stream.once("close", () => {
                             ftp.end();
                         });
-                        stream.pipe(fs.createWriteStream(LOCAL_CSV_PATH + "/" + file.name));
+                        
                         ftp.list(file.name, async (err, list) => {
                             const dateFtpFile = addHours(2, new Date(list[0].date));
                             const fileStats = await fsP.stat(LOCAL_CSV_PATH + "/" + file.name);

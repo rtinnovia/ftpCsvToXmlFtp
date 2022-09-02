@@ -2,9 +2,6 @@
   "name": "ftpcsvtoxmlftp",
   "version": "1.0.0",
   "description": "",
-  "engines": {
-    "node": "18.x"
-  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@netlify/functions": "^1.2.0",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.0.2",
     "fast-csv": "^4.3.6",

@@ -32,9 +32,49 @@ function compareMergedCsvFiles() {
     Promise.all([file1Promise, file2Promise]).then(() => {
         const data = [];
         fileData2.map((row2) => {
-            const objExist = fileData1.find((row1) => _.isEqual(row2, row1));
-            if (!objExist) {
-                data.push(row2);
+            const row2Enl = {
+                CODECLIENT: row2.CODECLIENT,
+                NUMORDRE: row2.NUMORDRE,
+                NUMDHL: row2.NUMDHL,
+                HRE: row2.HRE,
+                NOMENL: row2.NOMENL
+            };
+
+            const row2Liv = {
+                HRL: row2.HRL,
+                NOMLIV: row2.NOMLIV
+            };
+
+            const enlIsEqual = fileData1.find((row1) => {
+                const row1Enl = {
+                    CODECLIENT: row1.CODECLIENT,
+                    NUMORDRE: row1.NUMORDRE,
+                    NUMDHL: row1.NUMDHL,
+                    HRE: row1.HRE,
+                    NOMENL: row1.NOMENL
+                };
+                return _.isEqual(row2Enl, row1Enl);
+            });
+
+            const livIsEqual = fileData1.find((row1) => {
+                const row1Liv = {
+                    HRL: row1.HRL,
+                    NOMLIV: row1.NOMLIV
+                };
+                return _.isEqual(row2Liv, row1Liv);
+            });
+
+            const rowIsEqual = fileData1.find((row1) => _.isEqual(row2, row1));
+            
+            if (!rowIsEqual) {
+                if (enlIsEqual && !livIsEqual) {
+                    row2.HRE = "";
+                    row2.NOMENL = "";
+                    data.push(row2);
+                }
+                if (!enlIsEqual && !livIsEqual) {
+                    data.push(row2);
+                }
             }
         });
 

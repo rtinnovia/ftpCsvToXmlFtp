@@ -1,8 +1,10 @@
-export const handler = async () => {
+import { schedule } from "@netlify/functions";
+
+const handlerFn = async () => {
     return {
         statusCode: 200,
-        body: JSON.stringify({
-            message: 'This is what will be returned!'
-        })
+        body: "ok"
     }
 }
+
+export const handler = schedule("* * * * *", handlerFn)

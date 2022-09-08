@@ -2,7 +2,7 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const moment = require("moment");
 
-async function csvCheck(pathToCsvFile, isDelivery = false) {
+async function csvCheck(pathToCsvFile, isDelivery, isPickUp) {
     const results = [];
     const validRows = [];
     const csvFile = fs.createReadStream(pathToCsvFile);
@@ -42,29 +42,41 @@ async function csvCheck(pathToCsvFile, isDelivery = false) {
         })
         .on("end", () => {
             for (let result of results) {
-                if (result.CODECLIENT === "") {
-                    continue;
-                }
-                if (result.NUMORDRE === "") {
-                    continue;
-                }
-                if (result.NUMDHL === "") {
-                    continue;
-                }
-                if (!moment(result.HRE, "YYYY/MM/DD HH:mm", true).isValid()) {
-                    continue;
-                }
-                if (result.NOMENL === "") {
-                    continue;
-                }
-                
-
-                if (isDelivery) {
-                    if (result.HRL === "" && result.NOMLIV === "") {
+                if (isPickUp) {
+                    if (result.CODECLIENT === "") {
+                        continue;
+                    }
+                    if (result.NUMORDRE === "") {
+                        continue;
+                    }
+                    if (result.NUMDHL === "") {
+                        continue;
+                    }
+                    if (!moment(result.HRE, "YYYY/MM/DD HH:mm", true).isValid()) {
+                        continue;
+                    }
+                    if (result.NOMENL === "") {
                         continue;
                     }
                 }
-                // console.log("✅");
+
+                if (isDelivery) {
+                    if (result.CODECLIENT === "") {
+                        continue;
+                    }
+                    if (result.NUMORDRE === "") {
+                        continue;
+                    }
+                    if (result.NUMDHL === "") {
+                        continue;
+                    }
+                    if (!moment(result.HRL, "YYYY/MM/DD HH:mm", true).isValid()) {
+                        continue;
+                    }
+                    if (result.NOMLIV === "") {
+                        continue;
+                    }
+                }
                 validRows.push(result);
             }
         });

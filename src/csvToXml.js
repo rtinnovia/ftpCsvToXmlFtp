@@ -11,10 +11,9 @@ const pathToCsvFile = LOCAL_CSV_NEW_FILE;
 
 // Pickup
 async function convertIntoPickupDirectory() {
-    const pickups = await csvCheck(pathToCsvFile);
+    const pickups = await csvCheck(pathToCsvFile, false, true);
     
     if (!_.isEqual(pickups, [])) {
-        console.log(pickups)
 
         pickups.forEach((pickup) => {
             const HRE = moment(pickup.HRE, "YYYY-MM-DD hh:mm").format();
@@ -27,14 +26,18 @@ async function convertIntoPickupDirectory() {
                 }
             );
         });
-        console.log("✅ 🔄 : pickup xml file created");
-        require("../logs/index").info(`✅ 🔄 : pickup xml file was created`);
+        console.log("✅ 🔄 : pickup xml file(s) has been created");
+        require("../logs/index").info(`✅ 🔄 : pickup xml file(s) has been created`);
+    }
+    if (_.isEqual(pickups, [])) {
+        console.log("❌ 🔄 : no pickup xml file(s) has been created");
+        require("../logs/index").info(`❌ 🔄 : no pickup xml file(s) has been created`);
     }
 }
 
 // Delivery
 async function convertIntoDeliveryDirectory() {
-    const deliveries = await csvCheck(pathToCsvFile, true);
+    const deliveries = await csvCheck(pathToCsvFile, true, false);
 
     if (!_.isEqual(deliveries, [])) {
         
@@ -49,8 +52,12 @@ async function convertIntoDeliveryDirectory() {
                 }
             );
         });
-        console.log("✅ 🔄 : delivery xml file created");
-        require("../logs/index").info(`✅ 🔄 : delivery xml file was created`);
+        console.log("✅ 🔄 : delivery xml file(s) has been created");
+        require("../logs/index").info(`✅ 🔄 : delivery xml file(s) has been created`);
+    }
+    if (_.isEqual(deliveries, [])) {
+        console.log("❌ 🔄 : no delivery xml file has been created");
+        require("../logs/index").info(`❌ 🔄 : no delivery xml file has been created`);
     }
 }
 

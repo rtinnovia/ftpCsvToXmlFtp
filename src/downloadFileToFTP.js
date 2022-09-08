@@ -11,6 +11,14 @@ require("dotenv").config({ path: "../.env" });
 function downloadCsvFilesToFTP(ftp, path) {
     ftp.on("ready", () => {
         ftp.list(path, (err, list) => {
+            if (list.find(file => file.name.includes(".csv"))) {
+                console.log("✅ ⬇️  : csv files downloaded to ftp");
+                require("../logs/index").info(`✅ ⬇️ : csv files downloaded to ftp`);
+            }
+            if (!list.find(file => file.name.includes(".csv"))) {
+                console.log("❌ ⬇️  : no csv files on ftp server");
+                require("../logs/index").info(`❌ ⬇️ : no csv files on ftp server`);
+            }
             list.forEach((file) => {
                 if (file.name.includes(".csv")) {
                     ftp.get(file.name, (err, stream) => {
@@ -30,8 +38,6 @@ function downloadCsvFilesToFTP(ftp, path) {
                 }
             });
             ftp.end();
-            console.log("✅ ⬇️  : csv files downloaded to ftp")
-            require("../logs/index").info(`✅ ⬇️ : csv files downloaded to ftp`);
         });
     });
 }

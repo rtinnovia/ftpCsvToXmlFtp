@@ -1,11 +1,11 @@
 const fs = require("fs");
 const csv = require("fast-csv");
 const _ = require("lodash");
-const { LOCAL_CSV_PATH_GENERATED } = require("../config/path");
+const { LOCAL_CSV_PATH_GENERATED, LOCAL_CSV_FILE, LOCAL_CSV_OLD_NAME } = require("../config/path");
 
 function compareMergedCsvFiles() {
-    const file1 = LOCAL_CSV_PATH_GENERATED + "/old_merge.csv";
-    const file2 = LOCAL_CSV_PATH_GENERATED + "/merge.csv";
+    const file1 = LOCAL_CSV_OLD_NAME;
+    const file2 = LOCAL_CSV_FILE;
     const fileData1 = [];
     const fileData2 = [];
 
@@ -65,7 +65,7 @@ function compareMergedCsvFiles() {
             });
 
             const rowIsEqual = fileData1.find((row1) => _.isEqual(row2, row1));
-            
+
             if (!rowIsEqual) {
                 if (enlIsEqual && !livIsEqual) {
                     row2.HRE = "";
@@ -75,6 +75,9 @@ function compareMergedCsvFiles() {
                 if (!enlIsEqual && !livIsEqual) {
                     data.push(row2);
                 }
+                if (!enlIsEqual && livIsEqual) {
+                    data.push(row2);
+                }
             }
         });
 
@@ -82,12 +85,12 @@ function compareMergedCsvFiles() {
         const writableStream = fs.createWriteStream(LOCAL_CSV_PATH_GENERATED + "/new_merge.csv");
 
         writableStream.on("finish", function () {
-            console.log("✅ 🔄 : new_merge.csv file was created !");
+            console.log("✅ 🔄 : new_merge.csv file has been created !");
             if (_.isEqual(data, [])) {
-                require("../logs/index").info(`✅ 🔄 : new_merge.csv file was created without data`);
+                require("../logs/index").info(`✅ 🔄 : new_merge.csv file has been created without data`);
             } 
             if (!_.isEqual(data, [])) {
-                require("../logs/index").info(`✅ 🔄 : new_merge.csv file was created with ${data.length} row(s)`);
+                require("../logs/index").info(`✅ 🔄 : new_merge.csv file has been created with ${data.length} row(s)`);
             } 
         });
 

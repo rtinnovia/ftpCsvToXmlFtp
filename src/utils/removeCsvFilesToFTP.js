@@ -1,24 +1,21 @@
-const ftp = require("./ftp");
+const ftp = require("../ftp");
 
-require("dotenv").config({ path: "../.env" });
-
-async function removeFileToFTP(ftp, path) {
+function removeFileToFTP(ftp, path) {
     ftp.on("ready", () => {
         ftp.list(path, (err, list) => {
+            if (err) throw err;
             list.forEach((file) => {
                 if (file.name.includes(".csv")) {
-                    ftp.delete(file.name, (err) => {
+                    ftp.delete(path + file.name, (err) => {
                         if (err) throw err;
+                        console.log(`${file.name} has been deleted`);
                         ftp.end();
                     });
-                } else {
-                    ftp.end()
-                }
+                } 
             });
+            ftp.end();
         });
     });
 }
 
 removeFileToFTP(ftp, "./");
-
-module.exports = removeFileToFTP;

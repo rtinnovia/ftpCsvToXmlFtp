@@ -11,6 +11,6 @@ async function removeRecreateFolder(folderPath) {
     }
 }
 
-removeRecreateFolder("../" + LOCAL_XML_PATH_GENERATED);
+removeRecreateFolder(LOCAL_XML_PATH_GENERATED);
 
 module.exports = removeRecreateFolder;

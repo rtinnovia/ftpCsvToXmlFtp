@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "go": "cd src && node downloadFileToFTP.js && node mergeFtpCsvFiles.js && node compareMergedCsvFiles.js && node mergeOldCsvFiles.js && node utils/removeRecreateFolder.js && node csvToXml.js  && node utils/removeCsvFiles.js && node utils/removeCsvFilesToFTP.js && node uploadFilesToSftp.js && node logGenerator.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@netlify/functions": "^1.2.0",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.0.2",
     "fast-csv": "^4.3.6",

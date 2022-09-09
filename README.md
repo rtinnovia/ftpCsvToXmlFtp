@@ -6,8 +6,8 @@ Setup is easy. clone the repository :
 
 ```bash
 git clone https://github.com/rtinnovia/csvToXmlDHL.git
-cd csvToXmlDHL
-npm install
+cd ftpCsvToXmlFtp
+npm install 
 ```
 
 Create an .env file at the root of your project with the following.
@@ -26,12 +26,12 @@ An example file `.env.example` is included.
 Your project is ready. For start the project you need to run :
 
 ```
-node main.js
+npm run go
 ```
 
 ## Description
 
-While you run this project the script will download a file named `DHLEDI.csv` on the FTP server then it converts all full rows in the csv to a xml file. Then xml files generated will be uploads on the FTP server and the csv file will be removed.
+While you run this project the script will download all files with `.csv` extension from the FTP server then it converts all full rows in the csv to a xml file. Then xml files generated will be uploads on the SFTP server and the csv files will be removed.
 
-A log is generated at the end for each run of the script. You can read the logs in `logs` folder.
+Various logs are generated during each runs of the script. You can read the logs in `logs` folder.
 

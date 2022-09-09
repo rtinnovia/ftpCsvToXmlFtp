@@ -10,12 +10,12 @@ let total = 0;
 let pickups = 0;
 let deliveries = 0;
 
-function logGenerator() {
+async function logGenerator() {
     sftp.connect({
-        host: SFTP_HOST,
-        port: SFTP_PORT,
-        username: SFTP_USERNAME,
-        password: SFTP_PASSWORD
+        host: process.env.SFTP_HOST,
+        port: process.env.SFTP_PORT,
+        username: process.env.SFTP_USERNAME,
+        password: process.env.SFTP_PASSWORD
     }).then(() => {
         return sftp.list("/in/work")
     }).then(data => {
@@ -31,15 +31,16 @@ function logGenerator() {
             }
         })
         if (total === 0) {
-            logger.error("No data in csv file")
+            console.log("❌ ⬆️  : 0 xml file has been generated")
+            logger.error("❌ ⬆️ : 0 xml file has been generated")
         }
         if (total !== 0) {
-            logger.info(`${total} records generated (${pickups} pickups and ${deliveries} deliveries)`);
+            logger.info(`✅ ⬆️ : ${total} records generated (${pickups} pickups and ${deliveries} deliveries)`);
         }
+    }).then(() => {
+        sftp.end();
     }).catch(err => {
         console.log(err)
-    }).finally(() => {
-        sftp.end()
     })
 }
 
